@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bids | BidSphere</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="theme.js"></script>
+</head>
+<body>
+    <nav class="glass-nav glass" id="main-nav">
+        <div class="logo" onclick="window.location.href='index.html'"><span class="gradient-text">BIDSphere</span></div>
+        <div class="nav-links">
+            <span id="user-display"></span>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme"></button>
+            <button onclick="window.location.href='dashboard.html'" class="btn btn-outline" style="margin-right: 0.5rem;">Marketplace</button>
+            <button id="logout-btn" class="btn btn-outline" style="border-color: rgba(239, 68, 68, 0.4); color: #ef4444;">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container" style="padding-top: 2rem;">
+        <header class="section-header reveal" style="text-align: center; margin-bottom: 3rem;">
+            <div class="badge-pill" style="font-size: 0.65rem; padding: 0.4rem 1rem;">ACTIVITY LOG</div>
+            <h1 class="fluid-header gradient-text" style="font-size: 2.8rem; margin-bottom: 0.5rem;">My Bidding History</h1>
+            <p style="color: var(--text-muted); font-size: 1rem; max-width: 600px; margin: 0 auto; line-height: 1.5;">Track your active participations and historical bids on premium assets.</p>
+        </header>
+
+        <div class="glass reveal" style="padding: 2rem; border-radius: 24px; min-height: 400px;">
+            <div id="bids-loading" style="text-align: center; padding: 4rem;">
+                <div class="logo" style="animation: pulse 1.5s infinite; font-size: 3rem;">B</div>
+                <p style="color: var(--text-muted); margin-top: 1rem;">Fetching your activity...</p>
+            </div>
+
+            <div id="no-bids" style="display: none; text-align: center; padding: 4rem;">
+                <div style="font-size: 4rem; margin-bottom: 1.5rem; opacity: 0.5;">🗳️</div>
+                <h3 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem;">No Bids Yet</h3>
+                <p style="color: var(--text-muted); margin-bottom: 2rem;">You haven't placed any bids on active auctions.</p>
+                <button class="btn btn-primary" onclick="window.location.href='dashboard.html'">Browse Auctions</button>
+            </div>
+
+            <div id="bids-table-container" style="display: none; overflow-x: auto;">
+                <table class="history-table" style="width: 100%; border-collapse: separate; border-spacing: 0 0.8rem;">
+                    <thead>
+                        <tr style="text-align: left;">
+                            <th style="padding: 1rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Item</th>
+                            <th style="padding: 1rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Bid Amount</th>
+                            <th style="padding: 1rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Date & Time</th>
+                            <th style="padding: 1rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bids-tbody">
+                        <!-- Bids loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer" style="padding: 2rem 0; margin-top: 5rem;">
+        <div class="container">
+            <div class="footer-content">
+                <p class="copyright">&copy; 2024 BidSphere. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="client.js"></script>
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) window.location.href = 'index.html';
+
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (user) document.getElementById('user-display').innerText = 'Hello, ' + user.name;
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        });
+
+        async function fetchMyBids() {
+            try {
+                const res = await fetch(`${window.baseUrl}/api/bids/user/my-bids`, {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const bids = await res.json();
+                
+                document.getElementById('bids-loading').style.display = 'none';
+                
+                if (!bids || bids.length === 0) {
+                    document.getElementById('no-bids').style.display = 'block';
+                    return;
+                }
+
+                const tbody = document.getElementById('bids-tbody');
+                document.getElementById('bids-table-container').style.display = 'block';
+                
+                tbody.innerHTML = bids.map(bid => {
+                    const item = bid.itemId || { title: 'Removed Item', category: 'N/A', imageUrl: '' };
+                    return `
+                        <tr class="reveal active" style="background: rgba(255,255,255,0.03); cursor: pointer;" onclick="window.location.href='item.html?id=${item._id}'">
+                            <td style="padding: 1rem; border-radius: 12px 0 0 12px;">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <img src="${window.formatImageUrl(item.imageUrl)}" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover;" onerror="this.src='https://placehold.co/100x100?text=Asset'">
+                                    <div>
+                                        <div style="font-weight: 700; color: var(--text-main);">${item.title}</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-muted);">${item.category}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="padding: 1rem; font-weight: 800; font-size: 1.1rem; color: var(--primary);">₹${new Intl.NumberFormat('en-IN').format(bid.bidAmount)}</td>
+                            <td style="padding: 1rem; color: var(--text-muted); font-size: 0.9rem;">${new Date(bid.timestamp).toLocaleString()}</td>
+                            <td style="padding: 1rem; border-radius: 0 12px 12px 0;">
+                                <span class="badge" style="background: rgba(99, 102, 241, 0.1); color: var(--primary); font-size: 0.65rem;">ACTIVE BID</span>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                
+                window.initScrollReveal();
+            } catch (err) {
+                console.error(err);
+                document.getElementById('bids-loading').innerHTML = '<p style="color: #ef4444;">Failed to load activity. Please try again.</p>';
+            }
+        }
+
+        fetchMyBids();
+    </script>
+</body>
+</html>

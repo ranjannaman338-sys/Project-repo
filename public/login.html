@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | BidSphere</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="theme.js"></script>
+</head>
+
+<body>
+    <button class="theme-toggle theme-toggle-fixed" onclick="toggleTheme()" aria-label="Toggle Theme"></button>
+    <div class="container" style="min-height: 90vh; display: flex; align-items: center; justify-content: center;">
+        <div class="auth-container reveal" style="width: 100%; max-width: 500px; padding: 1.5rem;">
+            <div class="glass" style="padding: clamp(2rem, 5vw, 4rem); width: 100%; border-radius: 40px; position: relative; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
+                <div id="error-alert" class="glass" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 1.2rem; border-radius: 16px; margin-bottom: 2rem; display: none; font-size: 0.9rem; font-weight: 500; text-align: center;"></div>
+                
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <div class="logo" style="margin-bottom: 1rem;"><span class="gradient-text">BIDSphere</span></div>
+                    <div class="badge-pill" style="margin-bottom: 1rem;">SECURE ACCESS</div>
+                    <h2 id="auth-title" style="font-size: clamp(1.5rem, 5vw, 2.2rem); font-weight: 800; letter-spacing: -1px;">Welcome back</h2>
+                    <p id="form-title" style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.95rem;">Enter your credentials to access the platform</p>
+                </div>
+
+                <form id="auth-form">
+                    <div class="form-group" id="name-group" style="display: none; margin-bottom: 2rem;">
+                        <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1rem; display: block;">Full Name</label>
+                        <input type="text" id="name" placeholder="John Doe" style="padding: 1.4rem; border-radius: 20px; background: var(--input-bg); border: 1px solid var(--glass-border); color: var(--text-main); font-weight: 600;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 2rem;">
+                        <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1rem; display: block;">Email Address</label>
+                        <input type="email" id="email" required placeholder="john@example.com" style="padding: 1.4rem; border-radius: 20px; background: var(--input-bg); border: 1px solid var(--glass-border); color: var(--text-main); font-weight: 600;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 3rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <label id="password-label" style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px;">Password</label>
+                            <a href="#" id="forgot-password" style="color: var(--primary); font-size: 0.85rem; text-decoration: none; font-weight: 700;">Forgot Password?</a>
+                        </div>
+                        <input type="password" id="password" required 
+                            minlength="8"
+                            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                            title="Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character"
+                            placeholder="••••••••" style="padding: 1.4rem; border-radius: 20px; background: var(--input-bg); border: 1px solid var(--glass-border); color: var(--text-main); font-weight: 600;">
+                        <p id="password-hint" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem; display: none; line-height: 1.4;">
+                            Must be 8+ characters with uppercase, lowercase, number, and special character (@$!%*?&).
+                        </p>
+                    </div>
+                    <button type="submit" id="submit-btn" class="btn btn-primary glow-primary" style="width: 100%; padding: 1.4rem; font-size: 1.2rem; border-radius: 20px; font-weight: 800; letter-spacing: 0.5px; color: white !important;">Sign In</button>
+                </form>
+
+                <div style="margin-top: 3rem; text-align: center; border-top: 1px solid var(--glass-border); padding-top: 2rem;">
+                    <p id="toggle-text" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Don't have an account?</p>
+                    <button id="toggle-auth" class="btn btn-outline" style="width: 100%; border-radius: 16px; padding: 1rem;">Create Account</button>
+                    <button id="reset-app-btn" style="margin-top: 2rem; background: none; border: none; color: var(--text-muted); font-size: 0.75rem; text-decoration: underline; cursor: pointer; opacity: 0.6;">System Reset & Diagnostics</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer" style="padding: 2rem 0; margin-top: 5rem;">
+        <div class="container">
+            <div class="footer-content">
+                <p class="copyright">&copy; 2024 BidSphere. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+    <script>
+        // Global Error Listeners for Diagnostics
+        window.onerror = function(msg, url, line, col, error) {
+            alert(`[JS ERROR] ${msg} at ${line}:${col}. URL: ${url}`);
+            return false;
+        };
+        window.onunhandledrejection = function(event) {
+            alert(`[PROMISE ERROR] Unhandled rejection: ${event.reason}`);
+        };
+
+        // Check if already logged in
+        if (localStorage.getItem('token')) {
+            window.location.href = 'dashboard.html';
+        }
+
+        const authForm = document.getElementById('auth-form');
+        const toggleBtn = document.getElementById('toggle-auth');
+        const forgotBtn = document.getElementById('forgot-password');
+        const nameGroup = document.getElementById('name-group');
+        const formTitle = document.getElementById('form-title');
+        const toggleText = document.getElementById('toggle-text');
+        const passwordLabel = document.getElementById('password-label');
+        const errorAlert = document.getElementById('error-alert');
+        const resetAppBtn = document.getElementById('reset-app-btn');
+        const submitBtn = document.getElementById('submit-btn');
+
+        function showError(msg) {
+            errorAlert.innerText = msg;
+            errorAlert.style.display = 'block';
+            setTimeout(() => { errorAlert.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 50);
+        }
+
+        function hideError() {
+            errorAlert.style.display = 'none';
+        }
+
+        resetAppBtn.addEventListener('click', () => {
+            localStorage.clear();
+            alert('Session and local cache cleared. The page will now reload.');
+            window.location.reload();
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        let mode = urlParams.get('mode') === 'register' ? 'register' : 'login'; // 'login', 'register', 'reset'
+        
+        // Initial UI Update
+        updateUI();
+
+        function updateUI() {
+            if (mode === 'login') {
+                nameGroup.style.display = 'none';
+                formTitle.innerText = 'Enter your credentials to access the platform';
+                submitBtn.innerText = 'Sign In to Account';
+                passwordLabel.innerText = 'Password';
+                toggleText.innerText = "Don't have an account?";
+                toggleBtn.innerText = "Register Now";
+                forgotBtn.style.display = 'inline';
+            } else if (mode === 'register') {
+                nameGroup.style.display = 'block';
+                formTitle.innerText = 'Create your secure BidSphere account';
+                submitBtn.innerText = 'Create Your Account Now';
+                passwordLabel.innerText = 'Choose Password';
+                toggleText.innerText = "Already have an account?";
+                toggleBtn.innerText = "Login Instead";
+                forgotBtn.style.display = 'none';
+            } else if (mode === 'reset') {
+                nameGroup.style.display = 'none';
+                formTitle.innerText = 'Reset your secure password';
+                submitBtn.innerText = 'Reset Password';
+                passwordLabel.innerText = 'New Password';
+                toggleText.innerText = "Remember your password?";
+                toggleBtn.innerText = "Back to Login";
+                forgotBtn.style.display = 'none';
+            }
+            
+            // Show/hide password hint in register/reset mode
+            const passwordHint = document.getElementById('password-hint');
+            if (mode === 'register' || mode === 'reset') {
+                passwordHint.style.display = 'block';
+            } else {
+                passwordHint.style.display = 'none';
+            }
+            
+            console.log(`[UI] Updated to ${mode} mode. Button text: ${submitBtn.innerText}`);
+        }
+
+        toggleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (mode === 'login') mode = 'register';
+            else mode = 'login';
+            updateUI();
+        });
+
+        forgotBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            mode = 'reset';
+            updateUI();
+        });
+
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideError();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const name = document.getElementById('name').value.trim();
+
+            // Use baseUrl defined in client.js for consistency
+            const currentBaseUrl = window.baseUrl || '';
+            console.log('[DIAG] Using BaseURL:', currentBaseUrl || 'relative');
+            
+            let endpoint = '';
+            let body = {};
+
+            if (mode === 'login') {
+                endpoint = `${currentBaseUrl}/api/login`;
+                body = { email, password };
+            } else if (mode === 'register') {
+                endpoint = `${currentBaseUrl}/api/register`;
+                body = { name, email, password };
+            } else if (mode === 'reset') {
+                endpoint = `${currentBaseUrl}/api/reset-password`;
+                body = { email, password };
+            }
+
+            try {
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    if (mode === 'reset') {
+                        alert(data.message);
+                        mode = 'login';
+                        updateUI();
+                    } else {
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('user', JSON.stringify(data.user));
+                        window.location.href = 'dashboard.html';
+                    }
+                } else {
+                    showError(data.message || 'Authentication failed. Please check your credentials.');
+                }
+            } catch (err) {
+                console.error('Submission error:', err);
+                showError(`Connection Error: ${err.message}. Please verify the server is running.`);
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | BidSphere</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="theme.js"></script>
+</head>
+<body>
+    <nav class="glass-nav glass" id="main-nav">
+        <div class="logo" onclick="window.location.href='index.html'"><span class="gradient-text">BIDSphere</span></div>
+        <div class="nav-links">
+            <span id="user-display"></span>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme"></button>
+            <button onclick="window.location.href='my-bids.html'" class="btn btn-outline" style="margin-right: 0.5rem;">My Bids</button>
+            <button id="sell-btn" class="btn btn-primary">Sell Item</button>
+            <button id="logout-btn" class="btn btn-outline" style="border-color: rgba(239, 68, 68, 0.4); color: #ef4444;">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container" style="padding-top: 2rem;">
+        <header class="section-header reveal" style="text-align: center; margin-bottom: 2rem;">
+            <div class="badge-pill" style="font-size: 0.65rem; padding: 0.4rem 1rem;">MARKETPLACE EXPLORER</div>
+            <h1 class="fluid-header gradient-text" style="font-size: 2.8rem; margin-bottom: 0.5rem;">Live Auctions</h1>
+            <p style="color: var(--text-muted); font-size: 1rem; max-width: 600px; margin: 0 auto; line-height: 1.5;">Acquire high-value commercial assets with real-time bidding transparency.</p>
+        </header>
+
+        <div class="filters-bar glass reveal" style="padding: 1.2rem; margin-bottom: 2rem; animation-delay: 0.2s; border-radius: 20px;">
+            <div class="filter-item" style="flex: 2;">
+                <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Search</label>
+                <div style="position: relative;">
+                    <span style="position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem; color: var(--text-muted);">🔍</span>
+                    <input type="text" id="search-input" class="modern-input" placeholder="Search by name, category, or brand..." style="padding-left: 3rem;">
+                </div>
+            </div>
+            <div class="filter-item">
+                <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Category</label>
+                <select id="category-filter" class="modern-input">
+                    <option value="">All Categories</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Gadgets">Gadgets</option>
+                    <option value="Automobiles">Automobiles</option>
+                    <option value="Phones">Phones</option>
+                    <option value="Laptops">Laptops</option>
+                    <option value="Cameras">Cameras</option>
+                    <option value="Watches">Watches</option>
+                    <option value="Real Estate">Real Estate</option>
+                    <option value="Furniture">Furniture</option>
+                    <option value="Collectibles">Collectibles</option>
+                    <option value="Home Electronics">Home Electronics</option>
+                    <option value="Industrial">Industrial</option>
+                    <option value="Fashion">Fashion</option>
+                    <option value="Fine Art">Fine Art</option>
+                    <option value="Sports">Sports</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Pricing</label>
+                <select id="sort-filter" class="modern-input">
+                    <option value="">Sort by Price</option>
+                    <option value="asc">Lowest Bid First</option>
+                    <option value="desc">Highest Bid First</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="items-grid" id="items-container">
+            <!-- Items loaded dynamically -->
+        </div>
+    </div>
+
+    <!-- Sell Modal -->
+    <div id="sell-modal" class="modal-overlay">
+        <div class="modal glass reveal scale-up" style="max-width: 550px; padding: 2rem; border-radius: 20px;">
+            <div class="modal-header" style="margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.6rem; font-weight: 800;">Sell an Item</h2>
+                <button class="close-btn" id="close-modal">&times;</button>
+            </div>
+            <form id="sell-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div class="form-group" style="grid-column: span 2;">
+                    <label style="font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Title</label>
+                    <input type="text" id="sell-title" required placeholder="e.g. Vintage Rolex Submariner" style="padding: 1rem; border-radius: 12px; background: var(--input-bg);">
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                    <label style="font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Description</label>
+                    <textarea id="sell-desc" rows="3" required placeholder="Describe the condition, history, and key features..." style="padding: 1rem; border-radius: 12px; background: var(--input-bg);"></textarea>
+                </div>
+                <div class="form-group">
+                    <label style="font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Category</label>
+                    <select id="sell-category" required style="padding: 1rem; border-radius: 12px; background: var(--input-bg); height: 50px;">
+                        <option value="Electronics">Electronics</option>
+                        <option value="Gadgets">Gadgets</option>
+                        <option value="Automobiles">Automobiles</option>
+                        <option value="Phones">Phones</option>
+                        <option value="Laptops">Laptops</option>
+                        <option value="Cameras">Cameras</option>
+                        <option value="Watches">Watches</option>
+                        <option value="Real Estate">Real Estate</option>
+                        <option value="Furniture">Furniture</option>
+                        <option value="Collectibles">Collectibles</option>
+                        <option value="Home Electronics">Home Electronics</option>
+                        <option value="Industrial">Industrial</option>
+                        <option value="Fashion">Fashion</option>
+                        <option value="Fine Art">Fine Art</option>
+                        <option value="Sports">Sports</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label style="font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Starting Price (₹)</label>
+                    <input type="number" id="sell-price" required min="1" style="padding: 1rem; border-radius: 12px; background: var(--input-bg); height: 100%;">
+                </div>
+                <div class="form-group">
+                    <label style="font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">End Time</label>
+                    <input type="datetime-local" id="sell-endTime" required style="padding: 1rem; border-radius: 12px; background: var(--input-bg); height: 50px;">
+                </div>
+                <div class="form-group">
+                    <label style="font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Image URL</label>
+                    <input type="text" id="sell-image" required placeholder="https://... or /images/..." style="padding: 1rem; border-radius: 12px; background: var(--input-bg); height: 100%;">
+                </div>
+                <button type="submit" class="btn btn-primary" style="grid-column: span 2; margin-top: 1rem; padding: 1.2rem; font-size: 1.1rem; border-radius: 12px;">Create Auction</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <footer class="main-footer" style="padding: 2rem 0; margin-top: 5rem;">
+        <div class="container">
+            <div class="footer-content">
+                <p class="copyright">&copy; 2024 BidSphere. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="client.js"></script>
+    <script>
+        // Check Auth
+        const token = localStorage.getItem('token');
+        if (!token) window.location.href = 'index.html';
+
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (!user) window.location.href = 'index.html';
+        document.getElementById('user-display').innerText = 'Hello, ' + user.name;
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        });
+
+        // Initialize view
+        window.fetchItems();
+
+        // Filter listeners
+        document.getElementById('search-input').addEventListener('input', () => window.fetchItems());
+        document.getElementById('category-filter').addEventListener('change', () => window.fetchItems());
+        document.getElementById('sort-filter').addEventListener('change', () => window.fetchItems());
+
+        // Modal logic
+        const sellModal = document.getElementById('sell-modal');
+        document.getElementById('sell-btn').addEventListener('click', () => {
+            sellModal.style.display = 'flex';
+            // Set default end time to 24 hours from now
+            const now = new Date();
+            now.setHours(now.getHours() + 24);
+            document.getElementById('sell-endTime').value = now.toISOString().slice(0, 16);
+        });
+        document.getElementById('close-modal').addEventListener('click', () => {
+            sellModal.style.display = 'none';
+        });
+        window.addEventListener('click', (e) => {
+            if (e.target === sellModal) sellModal.style.display = 'none';
+        });
+
+        // Check for 'sell' action in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('action') === 'sell') {
+            sellModal.style.display = 'flex';
+            const now = new Date();
+            now.setHours(now.getHours() + 24);
+            document.getElementById('sell-endTime').value = now.toISOString().slice(0, 16);
+        }
+
+        // Handle Sell Form submit
+        document.getElementById('sell-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newItem = {
+                title: document.getElementById('sell-title').value,
+                description: document.getElementById('sell-desc').value,
+                category: document.getElementById('sell-category').value,
+                startingPrice: Number(document.getElementById('sell-price').value),
+                endTime: document.getElementById('sell-endTime').value,
+                imageUrl: document.getElementById('sell-image').value
+            };
+
+            try {
+                const res = await fetch(baseUrl + '/api/items', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(newItem)
+                });
+                
+                if (res.ok) {
+                    window.showToast('Item listed successfully!', 'success');
+                    sellModal.style.display = 'none';
+                    document.getElementById('sell-form').reset();
+                    window.fetchItems();
+                } else {
+                    const data = await res.json();
+                    window.showToast(data.message || 'Failed to list item', 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                window.showToast('Connection error', 'error');
+            }
+        });
+
+        // Scroll effect for nav
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (!nav) return;
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+
+</html>

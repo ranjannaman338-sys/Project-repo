@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BidSphere | Premium Live Auction Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="theme.js"></script>
+</head>
+
+<body class="landing-page">
+    <nav class="glass-nav glass" id="main-nav">
+        <div class="logo-wrapper" style="display: flex; align-items: baseline; gap: 0.8rem;">
+            <div class="logo" style="font-weight: 800; font-size: 1.6rem; cursor: pointer; letter-spacing: -1px;"
+                onclick="window.location.href='index.html'"><span class="gradient-text">BIDSphere</span>
+            </div>
+            <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); opacity: 0.8;">Live
+                auctions</span>
+        </div>
+        <div class="nav-links" style="display: flex; align-items: center; gap: 2.5rem;">
+            <a href="#why-bidsphere"
+                style="font-size: 0.85rem; font-weight: 600; color: var(--text-main); text-decoration: none; opacity: 0.9;">Why
+                BidSphere?</a>
+            <a href="javascript:void(0)" onclick="handleSellLink()"
+                style="font-size: 0.85rem; font-weight: 600; color: var(--text-main); text-decoration: none; opacity: 0.9;">Sell
+                with Us</a>
+            <a href="#news"
+                style="font-size: 0.85rem; font-weight: 600; color: var(--text-main); text-decoration: none; opacity: 0.9;">News</a>
+            <a href="#contact"
+                style="font-size: 0.85rem; font-weight: 600; color: var(--text-main); text-decoration: none; opacity: 0.9;">Contact</a>
+            <button class="theme-toggle" onclick="toggleTheme()"
+                style="background:none; border:none; cursor:pointer; padding:0; margin:0; width:20px; height:20px;"></button>
+        </div>
+        <div class="nav-auth" style="display: flex; align-items: center; gap: 1rem;">
+            <button class="btn btn-outline" onclick="window.location.href='login.html?mode=register'"
+                style="border-radius: 99px; padding: 0.6rem 2rem; border-color: rgba(255,255,255,0.3); font-weight: 600;">Register</button>
+            <button class="btn btn-primary" onclick="window.location.href='login.html?mode=login'"
+                style="border-radius: 99px; padding: 0.6rem 2rem; background: linear-gradient(135deg, #6366f1, #a855f7); font-weight: 600;">Sign
+                in</button>
+        </div>
+    </nav>
+
+    <section class="hero-section" style="padding-top: 40px;">
+        <div class="container hero-grid" style="padding-bottom: 4rem;">
+            <div class="hero-content">
+                <div class="badge reveal"
+                    style="background: rgba(99, 102, 241, 0.1); color: #818cf8; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.65rem; font-weight: 700; width: fit-content; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; border: 1px solid rgba(99, 102, 241, 0.2); letter-spacing: 1px;">
+                    <span style="color: #c084fc; font-size: 1rem;">✦</span> NEXT GENERATION AUCTIONS
+                </div>
+                <h1 class="hero-title reveal" style="animation-delay: 0.2s; font-size: 4.5rem; line-height: 1; letter-spacing: -2px;">
+                    Secure<br><span class="gradient-text">Premium</span><br>Assets.
+                </h1>
+                <p class="hero-subtitle reveal"
+                    style="animation-delay: 0.4s; font-size: 1.1rem; max-width: 450px; margin-top: 1.5rem; opacity: 0.8; line-height: 1.5;">
+                    BidSphere is the world's leading platform for verified high-value asset disposal and real-time live
+                    auctions.
+                </p>
+                <div class="hero-ctas reveal"
+                    style="display: flex; gap: 1rem; margin-top: 3rem; animation-delay: 0.6s;">
+                    <button class="btn btn-primary glow-primary" onclick="handleLiveAuctionsClick()"
+                        style="padding: 1rem 2.5rem; font-size: 1rem; border-radius: 16px; font-weight: 700;">Live
+                        Auctions</button>
+                    <button class="btn btn-outline" onclick="window.location.href='login.html?mode=register'"
+                        style="padding: 1rem 2.5rem; font-size: 1rem; border-radius: 16px; font-weight: 700;">Start
+                        Selling</button>
+                </div>
+            </div>
+            <div class="hero-graphic reveal" style="animation-delay: 0.8s; perspective: 1000px;">
+                <div class="glass"
+                    style="width: 100%; height: 400px; position: relative; overflow: visible; display: flex; align-items: center; justify-content: center; border-radius: 32px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); backdrop-filter: blur(40px);">
+                    <svg viewBox="0 0 400 300"
+                        style="width: 75%; height: 75%; filter: drop-shadow(0 0 20px var(--primary-glow));">
+                        <path
+                            d="M100,250 L100,100 C100,50 150,50 150,100 L150,200 C150,250 200,250 200,200 L200,100 C200,50 250,50 250,100 L250,250"
+                            stroke="url(#hero-grad-final)" stroke-width="28" fill="none" stroke-linecap="round" />
+                        <defs>
+                            <linearGradient id="hero-grad-final" x1="0%" y1="100%" x2="0%" y2="0%">
+                                <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <div style="position: absolute; bottom: 20px; right: -20px; z-index: 20;"
+                        class="glass reveal scale-up">
+                        <div
+                            style="padding: 2rem; border-radius: 24px; min-width: 260px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 20px 40px rgba(0,0,0,0.4); background: rgba(15, 23, 42, 0.8);">
+                            <div
+                                style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 0.5rem;">
+                                Current High Bid</div>
+                            <div
+                                style="font-size: 2.2rem; font-weight: 800; color: #818cf8; letter-spacing: -1px; margin-bottom: 1rem;">
+                                ₹4,50,000</div>
+                            <div style="display: flex; align-items: center; gap: 0.6rem;">
+                                <span
+                                    style="width: 8px; height: 8px; background: #f43f5e; border-radius: 50%; display: inline-block; box-shadow: 0 0 10px #f43f5e; animation: pulse 2s infinite;"></span>
+                                <span
+                                    style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #f43f5e;">Live
+                                    Now</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Bar -->
+    <div class="trust-bar" style="background: transparent; border: none; padding: 6rem 0;">
+        <div class="container">
+            <p
+                style="font-size: 0.75rem; letter-spacing: 4px; font-weight: 800; color: var(--text-muted); margin-bottom: 3rem; text-align: center;">
+                TRUSTED BY GLOBAL INDUSTRY LEADERS</p>
+            <div class="trust-logos"
+                style="display: flex; justify-content: space-between; align-items: center; opacity: 0.8; filter: grayscale(1) invert(0.5);">
+                <span style="font-size: 2.5rem; font-weight: 800; letter-spacing: -2px;">Deloitte.</span>
+                <span style="font-size: 2.5rem; font-weight: 900; letter-spacing: -1px;">KPMG</span>
+                <span style="font-size: 2.5rem; font-weight: 800; letter-spacing: -3px;">pwc</span>
+                <span style="font-size: 2.8rem; font-weight: 300;">EY</span>
+                <span style="font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px;">BCG</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Auctions -->
+    <section id="live-auctions" class="feature-section"
+        style="background: var(--bg-main); position: relative; padding: 60px 0;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 4rem;">
+                <div class="badge reveal"
+                    style="margin: 0 auto 1.5rem; background: rgba(99, 102, 241, 0.1); color: var(--primary); border: 1px solid rgba(99, 102, 241, 0.2); padding: 0.4rem 1rem; font-size: 0.65rem;">
+                    LIVE MARKETPLACE</div>
+                <h2 class="feature-title reveal gradient-text"
+                    style="font-size: 3rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 1rem;">Active
+                    Real-Time Listings</h2>
+                <p class="reveal"
+                    style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+                    Participate in institutional-grade auctions for premium commercial assets and high-value equipment.
+                </p>
+            </div>
+            <div id="featured-items-container" class="items-grid">
+                <!-- Data injected by client.js/fetchFeaturedItems -->
+            </div>
+            <div style="text-align: center; margin-top: 4rem;">
+                <button class="btn btn-outline reveal"
+                    style="border-radius: 99px; padding: 1rem 3rem; font-size: 1rem; font-weight: 700;"
+                    onclick="handleLiveAuctionsClick()">View All Live Auctions</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="why-bidsphere" class="feature-section"
+        style="background: linear-gradient(to bottom, #020617, #0f172a); padding: 120px 0;">
+        <div class="container">
+            <h2 class="feature-title reveal" style="margin-bottom: 8rem; font-size: 3.5rem; font-weight: 800;">The
+                BidSphere Protocol</h2>
+            <div class="step-grid" style="gap: 3rem;">
+                <div class="step-card reveal glass"
+                    style="padding: 4rem; text-align: left; border-radius: 40px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div class="step-num"
+                        style="color: var(--primary); opacity: 0.1; font-size: 6rem; position: absolute; top: 1rem; right: 2rem;">
+                        01</div>
+                    <div style="font-size: 3rem; margin-bottom: 2rem;">🔍</div>
+                    <h3 style="margin-bottom: 1.5rem; font-size: 2rem; font-weight: 800;">Verify Assets</h3>
+                    <p style="color: var(--text-muted); line-height: 1.8; font-size: 1.1rem;">Every listing undergoes
+                        rigorous 24-point institutional verification to ensure asset authenticity and condition report
+                        accuracy.</p>
+                </div>
+                <div class="step-card reveal glass"
+                    style="padding: 4rem; text-align: left; border-radius: 40px; border: 1px solid var(--primary-glow); background: rgba(99, 102, 241, 0.03);">
+                    <div class="step-num"
+                        style="color: var(--primary); opacity: 0.1; font-size: 6rem; position: absolute; top: 1rem; right: 2rem;">
+                        02</div>
+                    <div style="font-size: 3rem; margin-bottom: 2rem;">⚡</div>
+                    <h3 style="margin-bottom: 1.5rem; font-size: 2rem; font-weight: 800;">Instant Bidding</h3>
+                    <p style="color: var(--text-muted); line-height: 1.8; font-size: 1.1rem;">Experience zero-latency
+                        bidding powered by our proprietary WebSocket infrastructure, ensuring you never miss a critical
+                        bid window.</p>
+                </div>
+                <div class="step-card reveal glass"
+                    style="padding: 4rem; text-align: left; border-radius: 40px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div class="step-num"
+                        style="color: var(--primary); opacity: 0.1; font-size: 6rem; position: absolute; top: 1rem; right: 2rem;">
+                        03</div>
+                    <div style="font-size: 3rem; margin-bottom: 2rem;">🛡️</div>
+                    <h3 style="margin-bottom: 1.5rem; font-size: 2rem; font-weight: 800;">Secure Transit</h3>
+                    <p style="color: var(--text-muted); line-height: 1.8; font-size: 1.1rem;">Automated legal transfer
+                        and specialized white-glove logistics ensure your acquired high-value assets are delivered with
+                        absolute security.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- News Section -->
+    <section id="news" class="feature-section" style="padding: 100px 0; background: var(--bg-main);">
+        <div class="container">
+            <h2 class="feature-title reveal gradient-text" style="font-size: 3.5rem; font-weight: 800; margin-bottom: 5rem;">Market Intelligence</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div class="glass reveal" style="padding: 2.5rem; border-radius: 32px;">
+                    <div style="color: var(--primary); font-weight: 800; font-size: 0.75rem; margin-bottom: 1rem; letter-spacing: 2px;">Q2 REPORT</div>
+                    <h4 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 1.5rem;">Luxury Asset Liquidity Reaches All-Time High</h4>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Institutional investment in digital-verified physical assets has surged by 45% this quarter.</p>
+                    <a href="#" style="color: var(--primary); font-weight: 700; text-decoration: none; font-size: 0.85rem;">Read Full Insight →</a>
+                </div>
+                <div class="glass reveal" style="padding: 2.5rem; border-radius: 32px; animation-delay: 0.2s;">
+                    <div style="color: var(--accent); font-weight: 800; font-size: 0.75rem; margin-bottom: 1rem; letter-spacing: 2px;">INSIDE BIDSphere</div>
+                    <h4 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 1.5rem;">New Verification Standard for Industrial Equipment</h4>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Launching the "BidSphere Prime" certification for heavy machinery listings.</p>
+                    <a href="#" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.85rem;">Explore Standards →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="feature-section" style="padding: 120px 0; background: linear-gradient(to bottom, #0f172a, #020617);">
+        <div class="container">
+            <div class="glass reveal" style="padding: 5rem; border-radius: 48px; border: 1px solid var(--primary-glow); display: flex; align-items: center; justify-content: space-between; gap: 4rem; flex-wrap: wrap;">
+                <div>
+                    <h2 style="font-size: 3.5rem; font-weight: 800; margin-bottom: 1.5rem;">Ready to Liquidate<br>Premium Assets?</h2>
+                    <p style="color: var(--text-muted); font-size: 1.2rem; max-width: 450px;">Contact our institutional desk for specialized disposal services and high-volume listings.</p>
+                </div>
+                <div style="display: flex; gap: 2rem;">
+                    <button class="btn btn-primary" style="padding: 1.5rem 4rem; font-size: 1.1rem; border-radius: 20px;">Contact Sales</button>
+                    <button class="btn btn-outline" style="padding: 1.5rem 4rem; font-size: 1.1rem; border-radius: 20px;">Our Team</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer" style="padding: 6rem 0; border-top: 1px solid rgba(255,255,255,0.05);">
+        <div class="container">
+            <div class="footer-grid" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem;">
+                <div>
+                    <div class="logo" style="margin-bottom: 2rem;"><span class="gradient-text"
+                            style="font-size: 2rem; font-weight: 800;">BIDSphere</span></div>
+                    <p style="color: var(--text-muted); line-height: 1.7; max-width: 300px;">The definitive global
+                        platform for institutional-grade asset disposal and verified luxury auctions.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 2rem; font-size: 1.1rem;">Marketplace</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 1rem;"><a href="#"
+                                style="color: var(--text-muted); text-decoration: none;">Live Auctions</a></li>
+                        <li style="margin-bottom: 1rem;"><a href="#"
+                                style="color: var(--text-muted); text-decoration: none;">Closed Results</a></li>
+                        <li style="margin-bottom: 1rem;"><a href="#"
+                                style="color: var(--text-muted); text-decoration: none;">Asset Categories</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 2rem; font-size: 1.1rem;">Platform</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 1rem;"><a href="#"
+                                style="color: var(--text-muted); text-decoration: none;">Verification Process</a></li>
+                        <li style="margin-bottom: 1rem;"><a href="#"
+                                style="color: var(--text-muted); text-decoration: none;">Fee Structure</a></li>
+                        <li style="margin-bottom: 1rem;"><a href="#"
+                                style="color: var(--text-muted); text-decoration: none;">Security Protocols</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 2rem; font-size: 1.1rem;">Legal</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 1rem;"><a href="#"
+                                style="color: var(--text-muted); text-decoration: none;">Terms of Service</a></li>
+                        <li style="margin-bottom: 1rem;"><a href="#"
+                                style="color: var(--text-muted); text-decoration: none;">Privacy Policy</a></li>
+                        <li style="margin-bottom: 1rem;"><a href="#"
+                                style="color: var(--text-muted); text-decoration: none;">AML Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                style="margin-top: 6rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+                <p>&copy; 2024 BidSphere Global Assets Ltd. All institutional rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+    <script>
+        // Handle Sell Link
+        function handleSellLink() {
+            if (localStorage.getItem('token')) {
+                window.location.href = 'dashboard.html?action=sell';
+            } else {
+                window.location.href = 'login.html?mode=register';
+            }
+        }
+
+        // Handle Live Auctions Click
+        function handleLiveAuctionsClick() {
+            if (localStorage.getItem('token')) {
+                window.location.href = 'dashboard.html';
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Check Auth
+        if (localStorage.getItem('token')) {
+            // Option to redirect to dashboard, but let's keep landing page accessible
+            // window.location.href = 'dashboard.html';
+        }
+
+        // Fetch Featured Items
+        if (typeof window.fetchFeaturedItems === 'function') {
+            window.fetchFeaturedItems().catch(err => console.error('Error loading featured items:', err));
+        }
+
+        // Scroll effect for nav
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(2, 6, 23, 0.9)';
+                nav.style.padding = '0.6rem 2.5rem';
+                nav.style.margin = '0';
+                nav.style.width = '100%';
+                nav.style.borderRadius = '0';
+                nav.style.top = '0';
+            } else {
+                nav.style.background = 'rgba(255, 255, 255, 0.03)';
+                nav.style.padding = '0.8rem 2.5rem';
+                nav.style.margin = '1.5rem';
+                nav.style.width = 'calc(100% - 3rem)';
+                nav.style.borderRadius = '99px';
+                nav.style.top = '1.5rem';
+            }
+        });
+    </script>
+</body>
+
+</html>

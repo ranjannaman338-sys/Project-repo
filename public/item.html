@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Detail | BidSphere</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="theme.js"></script>
+</head>
+<body>
+    <nav class="glass-nav glass" id="main-nav">
+        <div class="logo" onclick="window.location.href='index.html'"><span class="gradient-text">BIDSphere</span></div>
+        <div class="nav-links">
+            <a href="dashboard.html">Marketplace</a>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme"></button>
+            <button id="logout-btn" class="btn btn-outline" style="border-color: rgba(239, 68, 68, 0.4); color: #ef4444;">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container" style="padding-top: 2rem;">
+        <div id="item-detail-content">
+            <!-- Loaded dynamically with premium classes -->
+        </div>
+
+        <div class="detail-grid stack-on-mobile" style="margin-top: 2rem;">
+            <div class="glass reveal" style="padding: 1.5rem; animation-delay: 0.4s; border-radius: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-weight: 800; font-size: 1.4rem; letter-spacing: -0.5px;">Bidding History</h3>
+                    <div class="badge" style="background: rgba(16, 185, 129, 0.1); color: var(--success); font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; padding: 0.4rem 0.8rem; border-radius: 99px; border: 1px solid rgba(16, 185, 129, 0.2);">LIVE FEED</div>
+                </div>
+                <div style="max-height: 400px; overflow-y: auto; padding-right: 0.5rem;">
+                    <table class="history-table">
+                        <thead style="position: sticky; top: 0; background: var(--bg-main); z-index: 10;">
+                            <tr>
+                                <th style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1.5px; font-weight: 700;">Bidder</th>
+                                <th style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1.5px; font-weight: 700;">Amount</th>
+                                <th style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1.5px; font-weight: 700;">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bidding-history">
+                            <!-- Loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="glass bidding-section reveal" style="padding: 2.5rem; animation-delay: 0.6s; border-radius: 24px; border: 1px solid var(--primary-glow);">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <h3 style="font-weight: 800; font-size: 1.6rem; letter-spacing: -0.5px; margin-bottom: 0.5rem;">Place Your Bid</h3>
+                    <p style="color: var(--text-muted); font-size: 0.85rem;">Submit your best offer to secure this asset.</p>
+                </div>
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label style="font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 1rem; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1.5px;">Enter Bid Amount (₹)</label>
+                    <input type="number" id="bid-amount" placeholder="5,00,000" style="font-size: 2rem; font-weight: 800; padding: 1.2rem; background: var(--input-bg); border-radius: 16px; width: 100%; color: var(--primary); text-align: center; border: 2px solid var(--glass-border);">
+                    <div style="display: flex; gap: 0.8rem; justify-content: center; margin-top: 1rem;" id="quick-bid-buttons">
+                        <!-- Loaded dynamically -->
+                    </div>
+                    <p id="bid-hint" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem; font-weight: 600; text-align: center;"></p>
+                </div>
+                <button id="place-bid-btn" class="btn btn-primary glow-primary" style="width: 100%; padding: 1.2rem; font-size: 1.1rem; border-radius: 16px; font-weight: 700; letter-spacing: 1px;">Confirm Bid Now</button>
+                <p id="bid-message" style="margin-top: 1.5rem; text-align: center; font-weight: 700; padding: 1rem; border-radius: 12px; display: none; font-size: 0.95rem;"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <footer class="main-footer" style="padding: 2rem 0; margin-top: 5rem;">
+        <div class="container">
+            <div class="footer-content">
+                <p class="copyright">&copy; 2024 BidSphere. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="client.js"></script>
+    <script>
+        // Check Auth
+        const token = localStorage.getItem('token');
+        if (!token) window.location.href = 'index.html';
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const itemId = urlParams.get('id');
+
+        if (!itemId) window.location.href = 'dashboard.html';
+
+        window.addEventListener("scroll", () => { const nav = document.getElementById("main-nav"); if (!nav) return; if (window.scrollY > 50) nav.classList.add("scrolled"); else nav.classList.remove("scrolled"); }); // Load item details and history
+        window.fetchItemDetails(itemId);
+        window.fetchBiddingHistory(itemId);
+
+        document.getElementById('place-bid-btn').addEventListener('click', () => {
+            const amount = document.getElementById('bid-amount').value;
+            window.placeBid(itemId, amount);
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
