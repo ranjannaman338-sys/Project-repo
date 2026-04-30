@@ -30,11 +30,6 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    if (mongoose.connection.readyState !== 1) {
-      console.error('[Auth] Database not connected. ReadyState:', mongoose.connection.readyState);
-      return res.status(503).json({ message: 'Service temporarily unavailable: Database connection is being established. Please try again in a few seconds.' });
-    }
-
     let user = await User.findOne({ email: email.toLowerCase() });
     if (user) {
       console.warn('[Auth] Registration failed: Email already exists -', email);
@@ -66,10 +61,6 @@ router.post('/login', async (req, res) => {
 
     if (!email || !password) {
       return res.status(400).json({ message: 'Email and password are required' });
-    }
-
-    if (mongoose.connection.readyState !== 1) {
-      return res.status(503).json({ message: 'Service temporarily unavailable: Database connection is being established. Please try again in a few seconds.' });
     }
 
     const user = await User.findOne({ email: email.toLowerCase() });
