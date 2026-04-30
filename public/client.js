@@ -194,6 +194,18 @@ window.fetchItemDetails = async (itemId) => {
         const content = document.getElementById('item-detail-content');
         if (!content) return;
 
+        if (!res.ok) {
+            content.innerHTML = `
+                <div style="text-align: center; padding: 4rem 2rem;" class="glass reveal">
+                    <div style="font-size: 4rem; margin-bottom: 1.5rem;">⚠️</div>
+                    <h3 style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; color: #ef4444;">Asset Not Found</h3>
+                    <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2.5rem; max-width: 400px; margin-inline: auto;">The auction item you are looking for does not exist, has been removed, or the server is unreachable.</p>
+                    <button class="btn btn-primary" onclick="window.location.href='dashboard.html'">Back to Marketplace</button>
+                </div>
+            `;
+            return;
+        }
+
         content.innerHTML = `
             <div class="detail-grid" style="align-items: start; gap: 2.5rem;">
                 <div class="reveal">
@@ -245,6 +257,16 @@ window.fetchItemDetails = async (itemId) => {
         window.initScrollReveal();
     } catch (err) {
         console.error('Fetch detail error:', err);
+        const content = document.getElementById('item-detail-content');
+        if (content) {
+            content.innerHTML = `
+                <div style="text-align: center; padding: 4rem 2rem;" class="glass reveal">
+                    <div style="font-size: 4rem; margin-bottom: 1.5rem;">📡</div>
+                    <h3 style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; color: #ef4444;">Connection Failed</h3>
+                    <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2.5rem; max-width: 400px; margin-inline: auto;">Could not connect to the backend server. Please verify it is running.</p>
+                </div>
+            `;
+        }
     }
 };
 
@@ -369,6 +391,8 @@ window.placeBid = async (itemId, amount) => {
         
         if (res.status === 401) {
             alert('Your session has expired. Please login again.');
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
             window.location.href = 'login.html';
             return;
         }

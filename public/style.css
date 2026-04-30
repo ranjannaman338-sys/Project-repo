@@ -1266,7 +1266,7 @@ select.modern-input option {
 /* Tablets (Max 992px) */
 @media (max-width: 992px) {
     .hero-grid {
-        flex-direction: column;
+        grid-template-columns: 1fr;
         text-align: center;
         padding-top: 2rem;
         gap: 3rem;

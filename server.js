@@ -155,5 +155,9 @@ process.on('unhandledRejection', (reason, promise) => {
   console.error('[CRITICAL] Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
-startServer();
+if (!process.env.VERCEL) {
+  startServer();
+}
+
+module.exports = app;
 

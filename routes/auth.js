@@ -46,7 +46,7 @@ router.post('/register', async (req, res) => {
     console.log('[Auth] User saved successfully:', email);
 
     const secret = process.env.JWT_SECRET || 'bidSphere_dev_fallback_secret_2024';
-    const token = jwt.sign({ id: user._id, name: user.name }, secret, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id, name: user.name }, secret, { expiresIn: '7d' });
     console.log('[Auth] Token generated for:', email);
     res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
   } catch (err) {
@@ -87,7 +87,7 @@ router.post('/login', async (req, res) => {
 
     const secret = process.env.JWT_SECRET || 'bidSphere_dev_fallback_secret_2024';
     console.log('[Auth] Login successful:', email);
-    const token = jwt.sign({ id: user._id, name: user.name }, secret, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id, name: user.name }, secret, { expiresIn: '7d' });
     res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
   } catch (err) {
     console.error('[Auth] Login error details:', err.message);
